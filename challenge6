@@ -1,0 +1,152 @@
+#include <stdio.h>
+
+void reverseArray(int a[], int left, int right)
+{
+    int temp;
+
+    while (left < right)
+    {
+        temp = a[left];
+        a[left] = a[right];
+        a[right] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+int main()
+{
+    int a[12];
+    int n, i, k;
+    int sum = 0, min, max;
+    int second, found = 0;
+    int peaks = 0;
+    int current = 1, longest = 1;
+    int R, D, count = 0;
+    float average;
+
+    do
+    {
+        printf("Enter number of readings (5 to 12): ");
+        scanf("%d", &n);
+
+        if (n < 5 || n > 12)
+            printf("Invalid N. Enter again.\n");
+
+    } while (n < 5 || n > 12);
+
+    for (i = 0; i < n; i++)
+    {
+        do
+        {
+            printf("Enter reading %d (0 to 1000): ", i + 1);
+            scanf("%d", &a[i]);
+
+            if (a[i] < 0 || a[i] > 1000)
+                printf("Invalid reading. Enter again.\n");
+
+        } while (a[i] < 0 || a[i] > 1000);
+    }
+
+    printf("\nOriginal array: ");
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
+    min = max = a[0];
+
+    for (i = 0; i < n; i++)
+    {
+        sum += a[i];
+
+        if (a[i] < min)
+            min = a[i];
+
+        if (a[i] > max)
+            max = a[i];
+    }
+
+    average = (float)sum / n;
+
+    printf("\nSum = %d", sum);
+    printf("\nAverage = %.2f", average);
+    printf("\nMinimum = %d", min);
+    printf("\nMaximum = %d\n", max);
+
+    second = 0;
+    found = 0;
+
+    for (i = 0; i < n; i++)
+    {
+        if (a[i] < max &&
+            (found == 0 || a[i] > second))
+        {
+            second = a[i];
+            found = 1;
+        }
+    }
+
+    if (found)
+        printf("Second-largest distinct value = %d\n", second);
+    else
+        printf("No second-largest distinct value exists.\n");
+
+    for (i = 1; i < n - 1; i++)
+    {
+        if (a[i] > a[i - 1] && a[i] > a[i + 1])
+            peaks++;
+    }
+
+    printf("Number of local peaks = %d\n", peaks);
+
+    for (i = 1; i < n; i++)
+    {
+        if (a[i] > a[i - 1])
+        {
+            current++;
+
+            if (current > longest)
+                longest = current;
+        }
+        else
+        {
+            current = 1;
+        }
+    }
+
+    printf("Longest increasing run = %d\n", longest);
+
+    printf("Enter rotation K: ");
+    scanf("%d", &k);
+
+    k = k % n;
+
+    if (k < 0)
+        k += n;
+
+    if (k > 0)
+    {
+        reverseArray(a, 0, n - 1);
+        reverseArray(a, 0, k - 1);
+        reverseArray(a, k, n - 1);
+    }
+
+    printf("Rotated array: ");
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
+    R = a[n - 1];
+    D = (R % 9) + 1;
+
+    for (i = 0; i < n; i++)
+    {
+        if (a[i] % D == 0)
+            count++;
+    }
+
+    printf("\nR = %d", R);
+    printf("\nD = %d", D);
+    printf("\nNumber of values divisible by D = %d\n", count);
+
+    return 0;
+}
