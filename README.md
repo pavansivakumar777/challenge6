@@ -1,1 +1,1 @@
-# challenge6
+Write a C program to read 5–12 integer readings (0–1000) and calculate their sum, average, minimum, maximum, second-largest distinct value, number of local peaks, and longest increasing run. Then rotate the array by K positions and count the values divisible by D, where D is determined from the last element of the rotated array.
